@@ -181,7 +181,6 @@ class ConnectionPool:
     def connect(self, server):
         """connect to the server and returns the connection
         """
-        print("the server to connect to is =", server)
         params = self.get_connection_default_params(server)
         params = self.parse_server_params(server, **params)
         connection = self.get_connection(params)
