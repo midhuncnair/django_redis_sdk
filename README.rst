@@ -16,16 +16,19 @@ Django Redis SDK: A SDK for connecting to Redis server from Django.
 * Pluggable CLIENT, REDIS_CLIENT, PARSER, COMPRESSOR, SERIALIZER,
 * Out of the box support for Master-Slave and Shard client.
 * supports all default apis.
-* supports redis cluster; **requires** redis-py-cluster;
+* supports redis cluster; **requires** redis-py-cluster
+
+
 
 Dependancies
 ============
 
-`redis`_>=3.0.1
-`django`_>= 2.2
-`hiredis`_>=1.0.1 (if configured to use)
-`python`_>=3.5.9
-`redis-py-cluster`_>=2.0.0 (if configured to use)
+* `redis`_>=3.0.1
+* `django`_>= 2.2
+* `hiredis`_>=1.0.1 (if configured to use)
+* `python`_>=3.5.9
+* `redis-py-cluster`_>=2.0.0 (if configured to use)
+
 
 
 QuickStart

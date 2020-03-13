@@ -47,7 +47,7 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     python_requires='>=3.5.9',
-    license=read_text("LICENSE"),
+    license="MIT LICENSE",
     package_data={
         # If any package contains *.txt or *.rst files, include them:
         "": ["*.txt", "*.rst", "LICENSE"],
