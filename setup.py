@@ -12,7 +12,7 @@ python3 -m twine upload dist/*
 
 
 # __all__ = []
-__version__ = "0.1.0.0"
+__version__ = "0.1.1.0"
 __author__ = "Midhun C Nair<midhunch@gmail.com>"
 __maintainers__ = [
     "Midhun C Nair<midhunch@gmail.com>",
@@ -34,7 +34,7 @@ def read_text(path):
 
 setuptools.setup(
     name="django-redis-sdk",
-    version="0.1.0.0",
+    version="0.1.1.0",
     author="Midhun C Nair",
     author_email="midhunch@gmail.com",
     description="Django Redis sdk",

@@ -46,7 +46,7 @@ class ConnectionPool:
             "redis.connection.ConnectionPool"
         )
         self._connection_pool_cls = import_string(self._connection_pool_class_path)
-        self._connection_pool_cls_kwargs = self._options.get("CONNECTION_POOL_KWARGS", {})
+        self._connection_pool_cls_kwargs = self._options.get("CONNECTION_POOL_CLASS_KWARGS", {})
 
         self._redis_client_cls_path = self._options.get(
             "REDIS_CLIENT_CLASS",

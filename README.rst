@@ -1,6 +1,12 @@
 Django Redis SDK
 ================
 
+
+0.1.1.0
+-------
+
+General Bug Fixes
+
 0.1.0.0
 -------
 
