@@ -3,7 +3,9 @@ Django Redis SDK
 
 0.1.0.0
 -------
+
 Django Redis SDK: A SDK for connecting to Redis server from Django.
+
 * Supports both TCP socket connection and Unix socket connection
 * Plug and play architecture.
 * Everything is configurable.
@@ -18,19 +20,24 @@ Django Redis SDK: A SDK for connecting to Redis server from Django.
 
 Dependancies
 ============
-`redis`>=3.4.1
-`django`>= 2.2
-`hiredis`>=1.0.1 (if configured to use)
-`python`>=3.5.9
+
+`redis`_>=3.4.1
+`django`_>= 2.2
+`hiredis`_>=1.0.1 (if configured to use)
+`python`_>=3.5.9
 
 
 QuickStart
 ==========
+
 Installation and Basic Configuration
 ------------------------------------
+
 1. Install Django Redis SDK by running ``pip install django-redis-sdk``.
 2. Make changes in you settings file to accommodate the cache settings.
+
 .. code:: python
+
     # DjangoRedisSDKCache -> Master - slave connection
     CACHES = {
         'default': {
@@ -155,10 +162,12 @@ Installation and Basic Configuration
 
 
 Basic Usage
------------
+===========
+
 Django Redis SDK has same backend apis as Django with some additions
 
-eg::
+example::
+
     >>>from django.core.cache import cache
     >>>cache.set('foo', 'bar', timeout=5)  # key = foo, value = 'bar' and valid for 5 seconds
     >>>cache.ttl('foo')
@@ -177,11 +186,13 @@ eg::
 
 BACKEND values
 --------------
+
 *  ``django_redis_sdk.DjangoRedisSDKCache``  # for single namespace
 *  ``django_redis_sdk.DjangoRedisSDKShrededCache``  # for sharded namespace
 
 LOCATION values
 ---------------
+
 * String: comma seperated string for multiple server, single string value for single server.
 * List: single server in list for single server, multiple list value for multiple servers.
 * scheme:
@@ -189,9 +200,12 @@ LOCATION values
         ``host:port/db``  -> ``127.0.0.1:6379/1``  -> db is taken from url.
         ``:password@host:port``  -> ``:myPasswd@127.0.0.1:6379/1``  -> password taken from url as opposed to None or value in options.
         ``/path/to/the/unix/socket``  -> ``/etc/redis/connection.sock``  -> uses unix socket for communication
-        ``url_scheme://<combinations of above values>``  ->  ``redis://:passwd@127.0.0.0:6379/1``
-                                                 ->  ``rediss://localhost:6379/1`` --> ssl connection
-                                                 ->  ``unix://path/to/the/unix/socket`` --> unix socket connection
+        ``url_scheme://<combinations of above values>``
+
+        *  ``redis://:passwd@127.0.0.0:6379/1``
+        *  ``rediss://localhost:6379/1`` --> ssl connection
+        * ``unix://path/to/the/unix/socket`` --> unix socket connection
+
         NOTE: if url_scheme is not specified, we try to best assume the url_scheme; however it is best to provide the scheme.
 
 
@@ -200,14 +214,18 @@ OPTIONS
 
 DB
 ---
+
 **Default**: ``0``
+
 The URL specified db has precedence over this one.
 If you with to see the cached values through redis-cli please select the db you assigned before querying by ``SELECT <db>``
 
 
 PASSWORD
 --------
+
 **Default**: ``None``
+
 The URL specified password has precedence over this one.
 Ideally the REDIS server will be deployed inside a secure network with no access from outside; So, there wouldn't be a password set in that case.
 But if you have password set, Please configure it here.
@@ -215,31 +233,41 @@ But if you have password set, Please configure it here.
 
 CLIENT_CLASS options
 --------------------
+
 **Default**: According to the BACKEND.
+
 *  ``django_redis_sdk.clients.BaseClient``  # used as default in DjangoRedisSDKCache backend
 *  ``django_redis_sdk.clients.ShardedClient``  # used as default in DjangoRedisSDKShrededCache backend
 
 
 PARSER_CLASS options
 --------------------
+
 **Default**: ``redis.connection.DefaultParser``
+
 * ``redis.connection.PythonParser``
-* ``redis.connection.HiredisParser``  # requires hiredis `pip install hiredis`
+* ``redis.connection.HiredisParser``  # requires hiredis ``pip install hiredis``
 * ``redis.connection.DefaultParser``  # automatically chooses between python or hiredis (if hiredis available then hiredis else python)
 
 
 CONNECTION_POOL_CLASS options
 -----------------------------
+
 **Default**: ``redis.connection.ConnectionPool``
+
 Apply kwargs if any through ``CONNECTION_POOL_CLASS_KWARGS`` options for this class.
+
 * ``redis.connection.ConnectionPool``  # takes additional kwargs ``max_connections``
 * ``redis.connection.BlockingConnectionPool``  # takes additional kwargs ``max_connections``, ``timeout``
 * ``rediscluster.connection.ClusterConnectionPool``  # requires redis-py-cluster ``pip install redis-py-cluster``
 
 SERIALIZER_CLASS options
 ------------------------
+
 **Default**: ``django_redis_sdk.serializers.PickleSerializer``
+
 Apply kwargs if any through ``SERIALIZER_CLASS_KWARGS`` options for this class.
+
 *  ``django_redis_sdk.serializers.PickleSerializer``  # python pickle, takes ``PICKLE_VERSION`` options; defaults to -1
 *  ``django_redis_sdk.serializers.DummySerializer``  # no serialization
 *  ``django_redis_sdk.serializers.JsonSerializer``  # json.loads and json.dumbs
@@ -247,20 +275,27 @@ Apply kwargs if any through ``SERIALIZER_CLASS_KWARGS`` options for this class.
 
 PICKLE_VERSION
 --------------
+
 **Default**: ``-1``  # for custom SERIALIZER_CLASS you should configure the default value.
+
 Used along with ``SERIALIZER_CLASS=django_redis_sdk.serializers.PickleSerializer``; Otherwise no effect.
 
 
 COMPRESSOR_CLASS options
 ------------------------
+
 **Default**: ``django_redis_sdk.compressors.DummyCompressor``
+
 Apply kwargs if any through ``COMPRESSOR_CLASS_KWARGS`` options for this class.
+
 *  ``django_redis_sdk.compressors.DummyCompressor``  # no compression
 *  ``django_redis_sdk.compressors.ZlibCompressor``  # requires zlib to compress and decompress, takes ``COMPRESS_LEVEL``
 
 COMPRESS_LEVEL
 --------------
+
 **Default**: ``5``  # for custom COMPRESSOR_CLASS you should configure the default value.
+
 * Allowed values ``0`` to ``9``
 * ``0`` no compression.
 * ``9`` full compression.
@@ -268,40 +303,58 @@ COMPRESS_LEVEL
 
 REDIS_CLIENT_CLASS options
 --------------------------
+
 **Default**: ``redis.client.Redis``
+
 Apply kwargs if any through ``REDIS_CLIENT_KWARGS`` option for this class.
+
 *  ``redis.client.Redis``
-*  ``redis.client.StrictRedis``  # in redis-py>=3.4.1 this is same as `Redis`
+*  ``redis.client.StrictRedis``  # in redis>=3.4.1 this is same as ``redis.client.Redis``
 
 
 SOCKET_CONNECT_TIMEOUT
 ----------------------
+
 **Default**: ``None``  # means wait infinitely
+
 The maximum allowed time to wait to make a connection.
 
 
 SOCKET_TIMEOUT
 --------------
+
 **Default**: ``None``  # means wait infinitely
+
 The maximum allowed time to wait for an operation to wait (wait for response once after the connection is made).
 
 
 HANDLE_EXCEPTIONS
 -----------------
+
 **Default**: ``False``
+
 Whether to handle exceptions gracefully or propagate it?
 The exceptions defined in ``django_redis_sdk.utils.EXCEPTIONS_TO_HANDLE`` are caught and handled gracefully
 
 
 LOG_EXCEPTIONS
 --------------
+
 **Default**: ``False``
+
 Whether to log the exceptions While handling the exceptions.
 Used along with ``HANDLE_EXCEPTIONS``.
 
 
 LOGGER_NAME
 -----------
+
 **Default**: ``__name__``
+
 Defines which python logger to send the logs to while logging the exceptions.
 Used along with LOG_EXCEPTIONS and HANDLE_EXCEPTIONS.
+
+.. _redis: http://github.com/antirez/redis/
+.. _hiredis: http://github.com/antirez/hiredis/
+.. _python: http://python.org
+.. _django: https://www.djangoproject.com/
