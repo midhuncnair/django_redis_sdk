@@ -57,5 +57,5 @@ setuptools.setup(
         "redis>=3.0.1",
         "django>=2.2",
     ],
-    keywords="django redis sdk cache",
+    keywords="django, redis, django-redis-sdk, redis-cache, cache, django-cache, django-redis-cache",
 )
