@@ -44,9 +44,9 @@ Installation and Basic Configuration
             'BACKEND': 'django_redis_sdk.DjangoRedisSDKCache',
             'KEY_PREFIX': 'production',
             'LOCATION': [
-                '[<scheme>://]<host>:<port>',  # Master
-                '[<scheme>://]<host>:<port>',  # slave 1
-                '[<scheme>://]<host>:<port>',  # slave 2
+                '[<scheme>://][:password@]<host>:<port>',  # Master
+                '[<scheme>://][:password@]<host>:<port>',  # slave 1
+                '[<scheme>://][:password@]<host>:<port>',  # slave 2
                 # ...
             ],
             'OPTIONS': {
@@ -126,9 +126,9 @@ Installation and Basic Configuration
             'BACKEND': 'django_redis_sdk.DjangoRedisSDKCache',
             'KEY_PREFIX': 'production',
             'LOCATION': [
-                '[<scheme>://][:password@]<host>:<port>[/db]',  # cluster 1
-                '[<scheme>://][:password@]<host>:<port>[/db]',  # cluster 2
-                '[<scheme>://][:password@]<host>:<port>[/db]',  # cluster 3
+                '[<scheme>://]<host>:<port>[/db]',  # cluster 1
+                '[<scheme>://]<host>:<port>[/db]',  # cluster 2
+                '[<scheme>://]<host>:<port>[/db]',  # cluster 3
                 # ...
             ],
             'OPTIONS': {
@@ -148,7 +148,7 @@ Installation and Basic Configuration
                 'COMPRESSOR_CLASS_KWARGS': {
                     'COMPRESS_LEVEL': 5,
                 },
-                'REDIS_CLIENT_CLASS': 'redis.client.StrictRedis',
+                'REDIS_CLIENT_CLASS': 'rediscluster.RedisCluster',
                 'REDIS_CLIENT_KWARGS': {},
                 'SOCKET_CONNECT_TIMEOUT': 5,  # in seconds; 5000 milliseconds,
                 'SOCKET_TIMEOUT': 1,  # in seconds; 1000 milliseconds,
@@ -231,17 +231,17 @@ Ideally the REDIS server will be deployed inside a secure network with no access
 But if you have password set, Please configure it here.
 
 
-CLIENT_CLASS options
---------------------
+CLIENT_CLASS
+------------
 
 **Default**: According to the BACKEND.
 
-*  ``django_redis_sdk.clients.BaseClient``  # used as default in DjangoRedisSDKCache backend
-*  ``django_redis_sdk.clients.ShardedClient``  # used as default in DjangoRedisSDKShrededCache backend
+*  ``django_redis_sdk.clients.BaseClient``  # used as default in ``DjangoRedisSDKCache`` backend
+*  ``django_redis_sdk.clients.ShardedClient``  # used as default in ``DjangoRedisSDKShrededCache`` backend
 
 
-PARSER_CLASS options
---------------------
+PARSER_CLASS
+------------
 
 **Default**: ``redis.connection.DefaultParser``
 
@@ -250,8 +250,8 @@ PARSER_CLASS options
 * ``redis.connection.DefaultParser``  # automatically chooses between python or hiredis (if hiredis available then hiredis else python)
 
 
-CONNECTION_POOL_CLASS options
------------------------------
+CONNECTION_POOL_CLASS
+---------------------
 
 **Default**: ``redis.connection.ConnectionPool``
 
@@ -261,8 +261,8 @@ Apply kwargs if any through ``CONNECTION_POOL_CLASS_KWARGS`` options for this cl
 * ``redis.connection.BlockingConnectionPool``  # takes additional kwargs ``max_connections``, ``timeout``
 * ``rediscluster.connection.ClusterConnectionPool``  # requires redis-py-cluster ``pip install redis-py-cluster``
 
-SERIALIZER_CLASS options
-------------------------
+SERIALIZER_CLASS
+----------------
 
 **Default**: ``django_redis_sdk.serializers.PickleSerializer``
 
@@ -281,8 +281,8 @@ PICKLE_VERSION
 Used along with ``SERIALIZER_CLASS=django_redis_sdk.serializers.PickleSerializer``; Otherwise no effect.
 
 
-COMPRESSOR_CLASS options
-------------------------
+COMPRESSOR_CLASS
+----------------
 
 **Default**: ``django_redis_sdk.compressors.DummyCompressor``
 
@@ -301,8 +301,8 @@ COMPRESS_LEVEL
 * ``9`` full compression.
 
 
-REDIS_CLIENT_CLASS options
---------------------------
+REDIS_CLIENT_CLASS
+------------------
 
 **Default**: ``redis.client.Redis``
 
@@ -310,6 +310,7 @@ Apply kwargs if any through ``REDIS_CLIENT_KWARGS`` option for this class.
 
 *  ``redis.client.Redis``
 *  ``redis.client.StrictRedis``  # in redis>=3.4.1 this is same as ``redis.client.Redis``
+*  ``rediscluster.RedisCluster``  # requires `redis-py-cluster`_ ; install using ``pip install redis-py-cluster``. For cluster support.
 
 
 SOCKET_CONNECT_TIMEOUT
@@ -358,3 +359,4 @@ Used along with LOG_EXCEPTIONS and HANDLE_EXCEPTIONS.
 .. _hiredis: http://github.com/antirez/hiredis/
 .. _python: http://python.org
 .. _django: https://www.djangoproject.com/
+.. _redis-py-cluster: https://github.com/Grokzen/redis-py-cluster
