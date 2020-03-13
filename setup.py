@@ -21,8 +21,14 @@ __maintainers__ = [
 import setuptools
 
 
-with open("README.rst", 'r') as fh:
-    long_description = fh.read()
+def read_text(path):
+    """Read the text from the given file and
+    return
+    """
+    with open(path, 'r') as fh:
+        data = fh.read()
+
+    return data
 
 
 setuptools.setup(
@@ -31,7 +37,7 @@ setuptools.setup(
     author="Midhun C Nair",
     author_email="midhunch@gmail.com",
     description="Django Redis sdk",
-    long_description=long_description,
+    long_description=read_text("README.rst"),
     long_description_content_type="text/x-rst",
     url="https://github.com/midhuncnair/django_redis_sdk",
     packages=setuptools.find_packages(),
@@ -41,4 +47,15 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     python_requires='>=3.5.9',
+    license=read_text("LICENSE.txt"),
+    package_data={
+        # If any package contains *.txt or *.rst files, include them:
+        "": ["*.txt", "*.rst", "LICENSE"],
+    },
+    install_requires=[
+        "docutils>=0.3",
+        "redis>=3.0.1",
+        "django>=2.2",
+    ]
+    keywords="django redis sdk cache "
 )
