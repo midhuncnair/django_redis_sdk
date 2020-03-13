@@ -56,6 +56,6 @@ setuptools.setup(
         "docutils>=0.3",
         "redis>=3.0.1",
         "django>=2.2",
-    ]
-    keywords="django redis sdk cache "
+    ],
+    keywords="django redis sdk cache",
 )
