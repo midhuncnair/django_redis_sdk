@@ -29,7 +29,6 @@ import socket
 from functools import (
     wraps
 )
-from six import string_types
 from redis.exceptions import TimeoutError, ConnectionError, ResponseError
 from django.core.exceptions import (
     ImproperlyConfigured
@@ -115,11 +114,11 @@ def handle_exception(default_value=None):
 def get_servers(in_servers):
     """validates and returns the servers
     """
-    if hasattr(in_servers, '__iter__'):
-        servers = in_servers
-
-    elif isinstance(in_servers, string_types):
+    if isinstance(in_servers, str):
         servers = in_servers.split(',')
+
+    elif hasattr(in_servers, '__iter__'):
+        servers = in_servers
 
     else:
         raise ImproperlyConfigured(
