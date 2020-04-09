@@ -228,10 +228,7 @@ class BaseClient:
         """Delete/Remove key from the cache.
         """
         key = self.make_key(key, version=version)
-        return client.delete(
-            key=key,
-            version=version,
-        )
+        return client.delete(key)
 
     @custom_exception
     def get_many(self, keys, client=None, version=None):
